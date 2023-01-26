@@ -1,39 +1,23 @@
-﻿using example.Models;
+﻿using example.Data;
 using Microsoft.AspNetCore.Mvc;
-using System.Xml.Linq;
 
 namespace example.Controllers
 {
 	[ApiController]
-	[Route("[controller]")]
-	public class PersonajeController : ControllerBase
+	[Route("api/[controller]")]
+	public class PersonajeController : Controller
 	{
+		private readonly PersonajesAPIDbContext dbContext;
 
-		private static readonly string[] Habilidades = new[]
+		public PersonajeController(PersonajesAPIDbContext dbContext)
 		{
-			"Fuerza", "Psiquico", "Velocidad", "Volar", "Invisibilidad", "Cyborg"
-		};
-
-		private readonly ILogger<PersonajeController> _logger;
-
-		public PersonajeController(ILogger<PersonajeController> logger)
-		{
-			_logger = logger;
+			this.dbContext = dbContext;
 		}
 
-		[HttpGet(Name = "GetPersonaje")]
-		public IEnumerable<Personaje> Get()
+		[HttpGet]
+		public IActionResult GetPersonajes()
 		{
-			return Enumerable.Range(1, 5).Select(index => new Personaje
-			{
-				ID = Random.Shared.Next(0, 100),
-				Name = "Personaje "+index,
-				Ability = Habilidades[Random.Shared.Next(Habilidades.Length)],
-				Power = Random.Shared.Next(0, 1000),
-				Health = Random.Shared.Next(0, 1000),
-			})
-			.ToArray();
+			return Ok(dbContext.Personajes.ToList());
 		}
-
 	}
 }
