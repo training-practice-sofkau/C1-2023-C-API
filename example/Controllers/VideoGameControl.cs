@@ -16,14 +16,14 @@ namespace example.Controllers
 
         //Consigo los video juegos
         [HttpGet]
-        public async Task<IActionResult>GetVideoJuegos()
+        public async Task<IActionResult> GetVideoGames()
         {
             return Ok(await dbContext.VideoJuegos.ToListAsync());
         }
         //Consigo un video juego
         [HttpGet]
         [Route("{id:guid}")]
-        public async Task<IActionResult> GetVidejuego([FromRoute] Guid id)
+        public async Task<IActionResult> GetVideoGame([FromRoute] Guid id)
         {
             var videoJuego = dbContext.VideoJuegos.FindAsync(id);
             if (videoJuego == null)
@@ -67,5 +67,21 @@ namespace example.Controllers
             }
             return NotFound();
         }
+
+        //Metodo Elimar
+        [HttpDelete]
+        [Route("{Id:guid}")]
+        public async Task<IActionResult> DaleteVideoGame([FromRoute] Guid id)
+        {
+            var videoJuego = await dbContext.VideoJuegos.FindAsync(id);
+            if (videoJuego != null)
+            {
+                dbContext.Remove(videoJuego);
+                await dbContext.SaveChangesAsync();
+                return Ok(videoJuego);
+            }
+            return NotFound();
+        }
+
     }
 }
