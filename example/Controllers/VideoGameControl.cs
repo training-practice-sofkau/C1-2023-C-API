@@ -14,11 +14,23 @@ namespace example.Controllers
             this.dbContext = dbContext;
         }
 
-        //Consigo los datos
+        //Consigo los video juegos
         [HttpGet]
-        public async Task<IActionResult>GetVideoJuego()
+        public async Task<IActionResult>GetVideoJuegos()
         {
             return Ok(await dbContext.VideoJuegos.ToListAsync());
+        }
+        //Consigo un video juego
+        [HttpGet]
+        [Route("{id:guid}")]
+        public async Task<IActionResult> GetVidejuego([FromRoute] Guid id)
+        {
+            var videoJuego = dbContext.VideoJuegos.FindAsync(id);
+            if (videoJuego == null)
+            {
+                return NotFound();
+            }
+            return Ok(videoJuego);
         }
 
         //Metodo para Añadir un juego
@@ -37,7 +49,7 @@ namespace example.Controllers
             return Ok(videoJuego);
         }
 
-        //Metodo para actualizar asdasda
+        //Metodo para actualizar
         [HttpPut]
         [Route("{Id:guid}")]
         public async Task<IActionResult> UpdateVideoGame([FromRoute] Guid id, UpdateVideoJuego updateVideoJuego)
