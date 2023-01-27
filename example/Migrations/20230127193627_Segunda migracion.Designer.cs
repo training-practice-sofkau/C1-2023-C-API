@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using example.Data;
 
@@ -11,9 +12,11 @@ using example.Data;
 namespace example.Migrations
 {
     [DbContext(typeof(MascotasAPIDbContext))]
-    partial class MascotasAPIDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230127193627_Segunda migracion")]
+    partial class Segundamigracion
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
