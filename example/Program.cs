@@ -10,7 +10,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<MascotasAPIDbContext>(options => options.UseInMemoryDatabase("MascotasDB")) ;
+//builder.Services.AddDbContext<MascotasAPIDbContext>(options => options.UseInMemoryDatabase("MascotasDB")) ;
+builder.Services.AddDbContext<MascotasAPIDbContext>(options => 
+    options.UseSqlServer(builder.Configuration.GetConnectionString("MascotasApiConnectionString")));
 
 var app = builder.Build();
 
