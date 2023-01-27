@@ -11,8 +11,17 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
+//Conexion a la base de datos
+var connectionString = builder.Configuration.GetConnectionString("conexion");
+builder.Services.AddDbContextPool<ProductsdbContext>(option =>
+option.UseSqlServer(connectionString));
+
+/*
 builder.Services.AddDbContext<ProductsdbContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("conexion")));
+
+builder.Services.AddDbContext<ProductsdbContext>();*/
 
 
 var app = builder.Build();
