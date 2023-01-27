@@ -120,6 +120,43 @@ namespace example.Controllers
 
         }
 
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteProgrammer(int id) {
+
+
+            if (_dbContext.Programmers == null){
+
+
+                return NotFound();
+
+
+            }
+
+            var programmer = await _dbContext.Programmers.FindAsync(id);
+           
+            if (programmer == null)
+            {
+
+                return NotFound();
+
+            }
+            _dbContext.Programmers.Remove(programmer);
+
+            await _dbContext.SaveChangesAsync();
+
+
+            return Ok();        
+        }
+
+
+
+
+
+
+
+
+
         private bool ProgrammerAvailable(int id)
         {
 
