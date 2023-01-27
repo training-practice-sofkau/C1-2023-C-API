@@ -25,12 +25,19 @@ namespace example.Controllers
         [Route("{id:guid}")]
         public async Task<IActionResult> GetVideoGame([FromRoute] Guid id)
         {
-            var videoJuego = dbContext.VideoJuegos.FindAsync(id);
-            if (videoJuego == null)
+            try
             {
-                return NotFound();
+                var videoJuego = dbContext.VideoJuegos.FindAsync(id);
+                if (videoJuego == null)
+                {
+                    return NotFound();
+                }
+                return Ok(videoJuego);
             }
-            return Ok(videoJuego);
+            catch (Exception)
+            {
+                return NotFound("Not fount id error 404");
+            }
         }
 
         //Metodo para Añadir un juego
@@ -55,17 +62,24 @@ namespace example.Controllers
         public async Task<IActionResult> UpdateVideoGame([FromRoute] Guid id, UpdateVideoJuego updateVideoJuego)
         {
             var videoJuego = await dbContext.VideoJuegos.FindAsync(id);
-            if (videoJuego != null)
+            try
             {
-                videoJuego.Title = updateVideoJuego.Title;
-                videoJuego.Descripcion = updateVideoJuego.Descripcion;
-                videoJuego.Productor = updateVideoJuego.Productor;
+                if (videoJuego != null)
+                {
+                    videoJuego.Title = updateVideoJuego.Title;
+                    videoJuego.Descripcion = updateVideoJuego.Descripcion;
+                    videoJuego.Productor = updateVideoJuego.Productor;
 
-                await dbContext.SaveChangesAsync();
+                    await dbContext.SaveChangesAsync();
 
-                return Ok(videoJuego);
+                    return Ok(videoJuego);
+                }
+                return NotFound();
             }
-            return NotFound();
+            catch (DbUpdateConcurrencyException)
+            {
+               return NotFound("Not fount id error 404");
+            }
         }
 
         //Metodo Eliminar
@@ -74,13 +88,32 @@ namespace example.Controllers
         public async Task<IActionResult> DaleteVideoGame([FromRoute] Guid id)
         {
             var videoJuego = await dbContext.VideoJuegos.FindAsync(id);
-            if (videoJuego != null)
+            try
             {
-                dbContext.Remove(videoJuego);
-                await dbContext.SaveChangesAsync();
-                return Ok(videoJuego);
+                if (videoJuego != null)
+                {
+                    dbContext.Remove(videoJuego);
+                    await dbContext.SaveChangesAsync();
+                    return Ok(videoJuego);
+                }
+                return NotFound();
+                /*var video = dbContext.VideoJuegos.FirstOrDefault(r => r.Id == id);
+                if (video != null)
+                {
+                    video.IsActive = 0;
+                    dbContext.SaveChanges();
+
+                }
+                else
+                {
+                    return NotFound();
+                }
+
+                return Ok("Juego eliminado");*/
             }
-            return NotFound();
+            catch (Exception){
+                return NotFound("Not fount id error 404");
+            }
         }
 
     }
