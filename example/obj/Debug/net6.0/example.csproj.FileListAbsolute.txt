@@ -30,3 +30,13 @@ C:\Users\Rolando\Desktop\Api\C1-2023-C-API\example\obj\Debug\net6.0\refint\examp
 C:\Users\Rolando\Desktop\Api\C1-2023-C-API\example\obj\Debug\net6.0\example.pdb
 C:\Users\Rolando\Desktop\Api\C1-2023-C-API\example\obj\Debug\net6.0\example.genruntimeconfig.cache
 C:\Users\Rolando\Desktop\Api\C1-2023-C-API\example\obj\Debug\net6.0\ref\example.dll
+C:\Users\Rolando\Desktop\Api\C1-2023-C-API\example\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.dll
+C:\Users\Rolando\Desktop\Api\C1-2023-C-API\example\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\Users\Rolando\Desktop\Api\C1-2023-C-API\example\bin\Debug\net6.0\Microsoft.Extensions.Caching.Abstractions.dll
+C:\Users\Rolando\Desktop\Api\C1-2023-C-API\example\bin\Debug\net6.0\Microsoft.Extensions.Caching.Memory.dll
+C:\Users\Rolando\Desktop\Api\C1-2023-C-API\example\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\Rolando\Desktop\Api\C1-2023-C-API\example\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\Rolando\Desktop\Api\C1-2023-C-API\example\bin\Debug\net6.0\Microsoft.Extensions.Logging.dll
+C:\Users\Rolando\Desktop\Api\C1-2023-C-API\example\bin\Debug\net6.0\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\Rolando\Desktop\Api\C1-2023-C-API\example\bin\Debug\net6.0\Microsoft.Extensions.Options.dll
+C:\Users\Rolando\Desktop\Api\C1-2023-C-API\example\bin\Debug\net6.0\Microsoft.Extensions.Primitives.dll

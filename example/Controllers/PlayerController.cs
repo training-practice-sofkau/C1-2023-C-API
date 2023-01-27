@@ -1,33 +1,30 @@
+﻿using example.Data;
 using Microsoft.AspNetCore.Mvc;
 
 namespace example.Controllers
 {
+
     [ApiController]
-    [Route("[controller]")]
-    public class WeatherForecastController : ControllerBase
+    [Route("api/[controller]")]
+    public class PlayerController : Controller
     {
-        private static readonly string[] Summaries = new[]
+        public readonly PlayerApi playerApi;
+        public PlayerController(PlayerApi playerApi)
+        
         {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
-
-        private readonly ILogger<WeatherForecastController> _logger;
-
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
-        {
-            _logger = logger;
+            this.playerApi = playerApi;
         }
 
-        [HttpGet(Name = "GetWeatherForecast")]
-        public IEnumerable<WeatherForecast> Get()
+
+        [HttpGet]
+        public IActionResult GetPlayers()
         {
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray();
+
+            return Ok(playerApi.players.ToList());
+            
         }
+
+        [HttpPost]
+        public IActionResult AddPlayer()
     }
 }

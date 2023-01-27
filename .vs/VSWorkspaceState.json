@@ -1,8 +1,9 @@
 {
   "ExpandedNodes": [
     "",
-    "\\example"
+    "\\example",
+    "\\example\\Controllers"
   ],
-  "SelectedNode": "\\example\\appsettings.json",
+  "SelectedNode": "\\example\\Controllers\\PlayerController.cs",
   "PreviewInSolutionExplorer": false
 }
