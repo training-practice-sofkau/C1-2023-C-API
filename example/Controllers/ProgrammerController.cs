@@ -72,6 +72,61 @@ namespace example.Controllers
         }
 
 
+        [HttpPut]
+        public async Task<ActionResult<Programmer>> PutProgrammer(int id , Programmer programmer) {
+
+            if (id != programmer.Id)
+            {
+
+                return BadRequest();
+
+            }
+
+
+            _dbContext.Entry(programmer).State = EntityState.Modified;
+
+
+            try
+            {
+
+                await _dbContext.SaveChangesAsync();
+
+
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+
+                    if (!ProgrammerAvailable(id))
+                    {
+
+                        return NotFound();
+
+
+                    }
+                    else {
+
+
+                        throw;
+                    
+                    }
+
+               
+
+
+            }
+
+            return Ok();
+
+
+        }
+
+        private bool ProgrammerAvailable(int id)
+        {
+
+            return (_dbContext.Programmers?.Any(x => x.Id == id)).GetValueOrDefault();
+        
+        }
+
 
 
 
