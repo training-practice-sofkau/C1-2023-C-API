@@ -1,6 +1,7 @@
 ﻿using example.Data;
 using example.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
 
@@ -92,12 +93,29 @@ namespace example.Controllers
 
             if (mascota != null)
             {
-                dbContext.Remove(mascota);
+                dbContext.Update(mascota.Estado = 0);
                 await dbContext.SaveChangesAsync();
                 return Ok($"{mascota.NombreDeLaMascota} Se ha eliminado de forma correcta!");
             }
 
             return NotFound();
         }
+
+       /* [HttpDelete]
+        [Route("{id:guid}")]
+        public async Task<IActionResult> EliminarMascota([FromRoute] Guid id)
+        {
+            var mascota = await dbContext.Mascotas.FindAsync(id);
+            SqlCommand cmd = new SqlCommand();
+            if (mascota != null)
+            {
+                cmd.CommandText = "ActualizarEstado";
+                cmd.Parameters.Add("Id", System.Data.SqlDbType.UniqueIdentifier).Value = id;
+                cmd.ExecuteNonQuery();
+                return Ok($"{mascota.NombreDeLaMascota} Se ha eliminado de forma correcta!");
+            }
+
+            return NotFound();
+        }*/
     }
 }
