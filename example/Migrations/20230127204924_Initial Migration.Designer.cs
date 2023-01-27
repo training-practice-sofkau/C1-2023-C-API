@@ -12,7 +12,7 @@ using example.Data;
 namespace example.Migrations
 {
     [DbContext(typeof(VideoJuegoData))]
-    [Migration("20230127010322_Initial-Migration")]
+    [Migration("20230127204924_Initial Migration")]
     partial class InitialMigration
     {
         /// <inheritdoc />

@@ -51,10 +51,10 @@ namespace example.Controllers
 
         //Metodo para actualizar
         [HttpPut]
-        [Route("{Id:guid}")]
+        [Route("{id:guid}")]
         public async Task<IActionResult> UpdateVideoGame([FromRoute] Guid id, UpdateVideoJuego updateVideoJuego)
         {
-            var videoJuego = dbContext.VideoJuegos.Find(id);
+            var videoJuego = await dbContext.VideoJuegos.FindAsync(id);
             if (videoJuego != null)
             {
                 videoJuego.Title = updateVideoJuego.Title;
@@ -68,9 +68,9 @@ namespace example.Controllers
             return NotFound();
         }
 
-        //Metodo Elimar
+        //Metodo Eliminar
         [HttpDelete]
-        [Route("{Id:guid}")]
+        [Route("{id:guid}")]
         public async Task<IActionResult> DaleteVideoGame([FromRoute] Guid id)
         {
             var videoJuego = await dbContext.VideoJuegos.FindAsync(id);
