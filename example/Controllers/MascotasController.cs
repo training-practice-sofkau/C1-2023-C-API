@@ -2,6 +2,7 @@
 using example.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
 
 namespace example.Controllers
 {
@@ -33,6 +34,7 @@ namespace example.Controllers
                 return NotFound();
             }
             return Ok(mascota);
+           
         }
 
         [HttpPost]
@@ -53,7 +55,7 @@ namespace example.Controllers
             await dbContext.Mascotas.AddAsync(mascotas);
             await dbContext.SaveChangesAsync();
 
-            return Ok(mascotas);
+            return Ok($"{mascotas.NombreDeLaMascota} Se ha registrado de forma correcta!");
           
         }
 
@@ -74,7 +76,7 @@ namespace example.Controllers
 
                 await dbContext.SaveChangesAsync();
 
-                return Ok(mascota);
+                return Ok("El registro se ha actualizado de forma correcta!");
             }
 
             return NotFound();
@@ -92,7 +94,7 @@ namespace example.Controllers
             {
                 dbContext.Remove(mascota);
                 await dbContext.SaveChangesAsync();
-                return Ok(mascota);
+                return Ok($"{mascota.NombreDeLaMascota} Se ha eliminado de forma correcta!");
             }
 
             return NotFound();
