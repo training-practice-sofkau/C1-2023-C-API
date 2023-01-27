@@ -1,7 +1,9 @@
-﻿using example.Model;
+﻿using example.Data;
+using example.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-
+using example.ReponseDto;
+using System.Net;
 
 namespace example.Controllers
 {
@@ -14,47 +16,80 @@ namespace example.Controllers
         public JugadorController(JugadorApiContext jugadorApiContext)
 
         {
-            jugadorApiContext = jugadorApiContext;
-        }
-
-
-        [HttpGet]
-        [Route("GetJugadores")]
-        public async Task<ActionResult<IEnumerable<Jugador>>> GetJugadores()
-        {
-            return await jugadorApiContext.jugadors.ToListAsync();
+            this.jugadorApiContext = jugadorApiContext;
         }
 
         [HttpGet]
-        [Route("GetJugador/{id}")]
-        public async Task<ActionResult<Jugador>> GetJugador(int id)
+        public async Task<IActionResult> GetJugadores()
         {
-            var jugador = await jugadorApiContext.jugadors.FirstOrDefaultAsync(m => m.id == id);
+            EstadoRespuesta respuesta = new EstadoRespuesta();
+            try
+            {
+                respuesta.CodigoEstado = (int)HttpStatusCode.OK;
+                respuesta.mensaje = "consulta exitosa";
+                respuesta.Datos = jugadorApiContext.jugadors.ToListAsync();
+                return Ok(respuesta);
+            } 
+            catch (Exception e)
+            {
+                respuesta.CodigoEstado = (int)HttpStatusCode.BadRequest;
+                respuesta.mensaje = e.Message;
+                return BadRequest(respuesta);
+            }
+            
+        }
+
+        [HttpGet]
+        [Route("{id:guid}")]
+        public async Task<IActionResult> GetJugador([FromRoute] Guid id)
+        {
+            
+            var jugador = await jugadorApiContext.jugadors.FindAsync(id);
+
             if (jugador == null)
+            {
                 return NotFound();
+            }
             return Ok(jugador);
         }
 
         [HttpPost]
         [Route("PostJugador")]
-        public async Task<ActionResult<Jugador>> PostJugador(Jugador jugador)
+        public async Task<IActionResult> AddJugador(AddJugadores AddJugadores)
         {
 
-            jugadorApiContext.Add(jugador);
+            var jugador = new Jugador()
+            {
+                Id = Guid.NewGuid(),
+                name = AddJugadores.name,
+                pais = AddJugadores.pais,
+                equipo = AddJugadores.equipo,
+                posicion = AddJugadores.posicion,
+
+            };
+
+            await jugadorApiContext.jugadors.AddAsync(jugador);
             await jugadorApiContext.SaveChangesAsync();
-            return Ok();
+
+            return Ok(jugador);
+
         }
 
         [HttpPut]
-        [Route("PutJugador/{id}")]
-        public async Task<IActionResult> PutJugador(int id, Jugador jugador)
-        {
-            if (id != jugador.id)
+        [Route("{id:guid}")]
+        public async Task<IActionResult> ActualizarJugador([FromRoute] Guid id, UpdateJugadores updateJugadores)
+
+         {
+            var jugador = await jugadorApiContext.jugadors.FindAsync(id);
+
+            if (jugador != null)
             {
-                throw new ArgumentException("id del jugador no coinciden");
+                jugador.name = updateJugadores.name;
+                jugador.pais = updateJugadores.pais;
+                jugador.equipo = updateJugadores.equipo;
+                jugador.posicion = updateJugadores.posicion;
             }
 
-            jugadorApiContext.Entry(jugador).State = EntityState.Modified;
             await jugadorApiContext.SaveChangesAsync();
             return Ok();
 
@@ -62,14 +97,18 @@ namespace example.Controllers
 
 
         [HttpDelete]
-        [Route("DeleteJugador/{id}")]
-        public async Task<IActionResult> DeleteJugador(int id)
+        [Route("{id:guid}")]
+        public async Task<IActionResult> DeleteJugador([FromRoute] Guid id)
         {
             var jugador = await jugadorApiContext.jugadors.FindAsync(id);
-            if (jugador == null) return NotFound();
-            jugadorApiContext.jugadors.Remove(jugador);
-            await jugadorApiContext.SaveChangesAsync();
-            return Ok();
+
+            if (jugador != null)
+            {
+                jugadorApiContext.Remove(jugador);
+                await jugadorApiContext.SaveChangesAsync();
+                return Ok(jugador);
+            }
+            return NotFound();
         }
     }
 

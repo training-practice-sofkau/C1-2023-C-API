@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "IievJfLXYGvAUZw3VLwdYzsemj1rOxLn4bZSnVXwFkwT3opV2xBBNtqXuKplwCCMlOIo/Gk24N3wLSSY+CFvtg==",
+  "dgSpecHash": "5Ol47aMsaPQBBsK+dmRMccmPE+YlOiJ5rlw04QZVv9fUuEzRUiy/YJUTwnjqL8qqJ1pu9C9DKbJWAR7610fVdg==",
   "success": true,
   "projectFilePath": "C:\\Users\\Rolando\\Desktop\\Api\\C1-2023-C-API\\example\\example.csproj",
   "expectedPackageFiles": [
@@ -15,6 +15,7 @@
     "C:\\Users\\Rolando\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\7.0.2\\microsoft.entityframeworkcore.abstractions.7.0.2.nupkg.sha512",
     "C:\\Users\\Rolando\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\7.0.2\\microsoft.entityframeworkcore.analyzers.7.0.2.nupkg.sha512",
     "C:\\Users\\Rolando\\.nuget\\packages\\microsoft.entityframeworkcore.design\\7.0.2\\microsoft.entityframeworkcore.design.7.0.2.nupkg.sha512",
+    "C:\\Users\\Rolando\\.nuget\\packages\\microsoft.entityframeworkcore.inmemory\\7.0.2\\microsoft.entityframeworkcore.inmemory.7.0.2.nupkg.sha512",
     "C:\\Users\\Rolando\\.nuget\\packages\\microsoft.entityframeworkcore.relational\\7.0.2\\microsoft.entityframeworkcore.relational.7.0.2.nupkg.sha512",
     "C:\\Users\\Rolando\\.nuget\\packages\\microsoft.entityframeworkcore.sqlserver\\7.0.2\\microsoft.entityframeworkcore.sqlserver.7.0.2.nupkg.sha512",
     "C:\\Users\\Rolando\\.nuget\\packages\\microsoft.entityframeworkcore.tools\\7.0.2\\microsoft.entityframeworkcore.tools.7.0.2.nupkg.sha512",

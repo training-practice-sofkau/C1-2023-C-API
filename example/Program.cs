@@ -1,3 +1,6 @@
+using example.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,7 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-/*builder.Services.AddDbContext<PlayerApi>(options => options.UseInMemoryDatabase("PlayerDb"));*/
+builder.Services.AddDbContext<JugadorApiContext>(options => options.UseInMemoryDatabase("JugadorDb"));
 
 
 var app = builder.Build();
