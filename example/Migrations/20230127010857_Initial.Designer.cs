@@ -12,7 +12,7 @@ using example.Models;
 namespace example.Migrations
 {
     [DbContext(typeof(ProgrammerContext))]
-    [Migration("20230126223329_Initial")]
+    [Migration("20230127010857_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -38,6 +38,9 @@ namespace example.Migrations
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("IsActive")
+                        .HasColumnType("int");
 
                     b.Property<long>("PhoneNumber")
                         .HasColumnType("bigint");

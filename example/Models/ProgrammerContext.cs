@@ -8,9 +8,7 @@ namespace example.Models
         {
 
 
-        }
-
-            
+        }    
         public DbSet<Programmer> Programmers { get; set; }  
         
     

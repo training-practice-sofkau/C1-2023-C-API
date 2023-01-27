@@ -36,6 +36,9 @@ namespace example.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("IsActive")
+                        .HasColumnType("int");
+
                     b.Property<long>("PhoneNumber")
                         .HasColumnType("bigint");
 

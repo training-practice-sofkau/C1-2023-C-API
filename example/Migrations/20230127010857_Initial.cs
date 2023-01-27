@@ -18,7 +18,8 @@ namespace example.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CompleteName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<long>(type: "bigint", nullable: false)
+                    PhoneNumber = table.Column<long>(type: "bigint", nullable: false),
+                    IsActive = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

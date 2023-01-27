@@ -11,5 +11,7 @@
 
         public long PhoneNumber { get; set; }
 
+        public int IsActive { get; set; }
+
     }
 }
