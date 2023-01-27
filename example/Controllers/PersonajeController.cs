@@ -2,6 +2,7 @@
 using example.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Threading;
 
 namespace example.Controllers
 {
@@ -20,6 +21,16 @@ namespace example.Controllers
 		public async Task<List<Personaje>> GetPersonajes()
 		{
 			return await dbContext.Personajes.ToListAsync();
+		}
+
+		[HttpGet("{id}")]
+		public async Task<Object> Get(int id)
+		{
+			var personaje = await dbContext.Personajes.FirstOrDefaultAsync(m => m.ID == id);
+			if (personaje == null)
+				return NotFound();
+			return Ok(personaje);
+
 		}
 	}
 }
