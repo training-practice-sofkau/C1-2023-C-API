@@ -11,7 +11,6 @@ namespace example.Controllers
 	public class PersonajeController : ControllerBase
 	{
 		private readonly PersonajesAPIDbContext dbContext;
-
 		public PersonajeController(PersonajesAPIDbContext dbContext)
 		{
 			this.dbContext = dbContext;
@@ -20,7 +19,12 @@ namespace example.Controllers
 		[HttpGet]
 		public async Task<List<Personaje>> GetPersonajes()
 		{
-			return await dbContext.Personajes.ToListAsync();
+			//Busca los personajes que no hayan sido eliminados y los retorna
+			var personajeActivo = dbContext.Personajes.Where(r => r.BanActivo != false).ToList();
+			return personajeActivo;
+
+			//Muestra todos los personajes 
+			//return await dbContext.Personajes.ToListAsync();
 		}
 
 		[HttpGet("{id}")]
@@ -28,15 +32,14 @@ namespace example.Controllers
 		{
 			var personaje = await dbContext.Personajes.FirstOrDefaultAsync(m => m.ID == id);
 			if (personaje == null)
-				return NotFound();
+				return NotFound("El personaje no existe");
 			return Ok(personaje);
-
 		}
 
 		[HttpPost]
-		public async Task<OkResult> Post(Personaje personaje)
+		public async Task<object> Post(Personaje personajeData)
 		{
-			dbContext.Add(personaje);
+			dbContext.Add(personajeData);
 			await dbContext.SaveChangesAsync();
 			return Ok();
 		}
@@ -45,14 +48,16 @@ namespace example.Controllers
 		public async Task<Object> Put(Personaje personajeData)
 		{
 			if (personajeData == null || personajeData.ID == 0)
-				return BadRequest();
+				return BadRequest("El ID no es correcto. ");
 
-			var product = await dbContext.Personajes.FindAsync(personajeData.ID);
-			if (product == null)
-				return NotFound();
-			product.Name = personajeData.Name;
-			product.Ability = personajeData.Ability;
-			product.Power = personajeData.Power;
+			var personaje = await dbContext.Personajes.FindAsync(personajeData.ID);
+			if (personaje == null)
+				return NotFound("El personaje no existe. ");
+			if (personaje.BanActivo == false)
+				return NotFound("El ha sido eliminado. ");
+			personaje.Name = personajeData.Name;
+			personaje.Ability = personajeData.Ability;
+			personaje.Power = personajeData.Power;
 			await dbContext.SaveChangesAsync();
 			return Ok();
 		}
@@ -60,9 +65,10 @@ namespace example.Controllers
 		[HttpDelete("{id}")]
 		public async Task<Object> Delete(int id)
 		{
-			var product = await dbContext.Personajes.FindAsync(id);
-			if (product == null) return NotFound();
-			dbContext.Personajes.Remove(product);
+			var personaje = await dbContext.Personajes.FindAsync(id);
+			if (personaje.BanActivo == false) return NotFound("El personaje ya ha sido eliminado. ");
+			if (personaje == null) return NotFound("ID incorrecto");
+			dbContext.Personajes.Remove(personaje);
 				dbContext.SaveChanges();
 			return Ok();
 		}
