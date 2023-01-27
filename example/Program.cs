@@ -10,7 +10,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<PersonajesAPIDbContext>(options => options.UseInMemoryDatabase("personajes_anime"));
+var connectionString = builder.Configuration.GetConnectionString("personajes_anime");
+
+builder.Services.AddDbContextPool<PersonajesAPIDbContext>(options => options.UseSqlServer(connectionString));
 
 var app = builder.Build();
 

@@ -1,11 +1,13 @@
 ﻿using example.Data;
+using example.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace example.Controllers
 {
 	[ApiController]
 	[Route("api/[controller]")]
-	public class PersonajeController : Controller
+	public class PersonajeController : ControllerBase
 	{
 		private readonly PersonajesAPIDbContext dbContext;
 
@@ -13,11 +15,11 @@ namespace example.Controllers
 		{
 			this.dbContext = dbContext;
 		}
-
+		
 		[HttpGet]
-		public IActionResult GetPersonajes()
+		public async Task<List<Personaje>> GetPersonajes()
 		{
-			return Ok(dbContext.Personajes.ToList());
+			return await dbContext.Personajes.ToListAsync();
 		}
 	}
 }
