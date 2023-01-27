@@ -15,27 +15,28 @@ namespace example.Controllers
 
         public ProgrammerController(ProgrammerContext dbContext)
         {
-            
-            
+
+
             _dbContext = dbContext;
 
         }
 
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Programmer>>>GetProgrammer() {
+        public async Task<ActionResult<IEnumerable<Programmer>>> GetProgrammer() {
 
             if (_dbContext == null) {
 
-                return NotFound();            
+                return NotFound();
             }
-        
-        
-        return await _dbContext.Programmers.ToListAsync();
-        
+
+
+            return await _dbContext.Programmers.ToListAsync();
+
         }
 
-        [HttpGet]
+
+        [HttpGet("{id}")]
         public async Task<ActionResult<Programmer>> GetProgrammer(int id)
         {
 
@@ -56,6 +57,20 @@ namespace example.Controllers
             return programmer;
 
         }
+
+
+        [HttpPost]
+        public async Task<ActionResult<Programmer>> PostProgrammer(Programmer programmer) {
+
+            _dbContext.Programmers.Add(programmer);
+            await _dbContext.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetProgrammer), new { id = programmer.Id }, programmer);
+        
+        
+        
+        }
+
 
 
 
