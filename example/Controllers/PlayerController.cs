@@ -35,6 +35,14 @@ namespace example.Controllers
             return Ok(player);
         }
 
-
+        [HttpPost]
+        [Route("PostJugador")]
+        public async Task<ActionResult<Player>> PostJugador(Player player)
+        {
+          
+                playerApi.players.Add(player);
+                await playerApi.SaveChangesAsync();
+                return Ok();          
+        }
     }
 }
