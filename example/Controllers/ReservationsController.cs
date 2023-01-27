@@ -19,7 +19,9 @@ namespace example.Controllers
         [HttpGet]
         public async Task<IActionResult> GetReservations()
         {
-            return Ok(await dbContext.Reservations.ToListAsync());
+            var activeReservations = await dbContext.Reservations.Where(r => !r.IsDeleted).ToListAsync();
+
+            return Ok(activeReservations);
         }
 
         [HttpGet]
@@ -36,6 +38,9 @@ namespace example.Controllers
             return NotFound();
         }
 
+        //[HttpGet]
+
+
         [HttpPost]
         public async Task<IActionResult> AddReservation(AddReservationRequest AddReservationRequest)
         {
@@ -47,8 +52,8 @@ namespace example.Controllers
                 Date = AddReservationRequest.Date
             };
 
-            await dbContext.Reservations.AddAsync(reservation);
-            await dbContext.SaveChangesAsync();
+            dbContext.Reservations.AddAsync(reservation);
+            dbContext.SaveChanges();
 
             return Ok(reservation);
         }
@@ -83,12 +88,14 @@ namespace example.Controllers
             if (reservation != null)
             {
                 dbContext.Reservations.Remove(reservation);
-                await dbContext.SaveChangesAsync();
+                dbContext.SaveChanges();
 
                 return Ok(reservation);
             }
 
             return NotFound();
         }
+
+
     }
 }

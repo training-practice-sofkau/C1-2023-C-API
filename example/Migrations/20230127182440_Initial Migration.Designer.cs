@@ -12,7 +12,7 @@ using example.Data;
 namespace example.Migrations
 {
     [DbContext(typeof(ReservationsAPIDbContext))]
-    [Migration("20230127162142_Initial Migration")]
+    [Migration("20230127182440_Initial Migration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -37,6 +37,9 @@ namespace example.Migrations
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Location")
                         .IsRequired()
