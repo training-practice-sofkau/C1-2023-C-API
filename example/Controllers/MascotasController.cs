@@ -22,6 +22,19 @@ namespace example.Controllers
             return Ok(await dbContext.Mascotas.ToListAsync());
         }
 
+        [HttpGet]
+        [Route("{id:guid}")]
+        public async Task<IActionResult> GetMascota([FromRoute] Guid id) 
+        {
+            var mascota = await dbContext.Mascotas.FindAsync(id);
+
+            if (mascota == null)
+            {
+                return NotFound();
+            }
+            return Ok(mascota);
+        }
+
         [HttpPost]
         public async Task<IActionResult> AddMascotas(AgregarMascotaRequest agregarMascotaRequest) 
         {
@@ -61,6 +74,24 @@ namespace example.Controllers
 
                 await dbContext.SaveChangesAsync();
 
+                return Ok(mascota);
+            }
+
+            return NotFound();
+        }
+
+
+
+        [HttpDelete]
+        [Route("{id:guid}")]
+        public async Task<IActionResult> EliminarMascota([FromRoute] Guid id)
+        {
+           var mascota = await dbContext.Mascotas.FindAsync(id);
+
+            if (mascota != null)
+            {
+                dbContext.Remove(mascota);
+                await dbContext.SaveChangesAsync();
                 return Ok(mascota);
             }
 
