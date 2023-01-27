@@ -60,5 +60,17 @@ namespace example.Controllers
 
         }
 
+
+        [HttpDelete]
+        [Route("DeleteJugador/{id}")]
+        public async Task<IActionResult> DeleteJugador(int id)
+        {
+            var jugador = await jugadorApiContext.jugadors.FindAsync(id);
+            if (jugador == null) return NotFound();
+            jugadorApiContext.jugadors.Remove(jugador);
+            await jugadorApiContext.SaveChangesAsync();
+            return Ok();
+        }
     }
-}
+
+ }
