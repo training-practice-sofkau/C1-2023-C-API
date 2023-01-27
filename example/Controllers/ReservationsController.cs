@@ -38,5 +38,26 @@ namespace example.Controllers
 
             return Ok(reservation);
         }
+
+
+        [HttpPut]
+        [Route("{id:guid}")]
+        public async Task<IActionResult> UpdateReservation([FromRoute] Guid id, UpdateReservationRequest UpdateReservationRequest)
+        {
+            var reservation = await dbContext.Reservations.FindAsync(id);
+
+            if (reservation != null)
+            {
+                reservation.ClientName = UpdateReservationRequest.ClientName;
+                reservation.Location = UpdateReservationRequest.Location;
+                reservation.Date = UpdateReservationRequest.Date;
+
+                await dbContext.SaveChangesAsync();
+
+                return Ok(reservation);
+            }
+
+            return NotFound();
+        }
     }
 }
