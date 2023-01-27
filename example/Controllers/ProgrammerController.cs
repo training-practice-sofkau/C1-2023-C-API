@@ -12,9 +12,7 @@ namespace example.Controllers
     {
 
         private readonly ProgrammerContext _dbContext;
-        private Programmer pro = new Programmer();
-
-
+       
 
         public ProgrammerController(ProgrammerContext dbContext)
         {
@@ -27,15 +25,24 @@ namespace example.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Programmer>>>GetProgrammer() {
 
+            
+
             if (_dbContext == null)
             {
 
-                return BadRequest();
+                return BadRequest( new { 
+                
+                        code = 404,
+                        message = "Ocurrio algo inesperado"
+                
+                
+                });
 
             }
 
-
-            var activeRecords = _dbContext.Programmers.Where(r => r.IsActive != 0).ToList();
+            var activeRecords =  _dbContext.Programmers.Where(r => r.IsActive != 0).ToList();
+            
+            //var activeRecords = _dbContext.Programmers.Where(r => r.IsActive != 0).ToList();
 
             // return await _dbContext.Programmers.ToListAsync();
 
@@ -45,44 +52,63 @@ namespace example.Controllers
 
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Programmer>> GetProgrammer(int id)
-        {
-
-
-
-            if (_dbContext == null)
-            {
-
-                return NotFound();
-            }
+        public async Task<ActionResult<Programmer>> GetProgrammer(int id){
 
             var programmer = await _dbContext.Programmers.FindAsync(id);
-            if (programmer == null)
-            {
-                return NotFound();
+           // var activeRecords = _dbContext.Programmers.Where(r => r.IsActive != 0).ToList();
+            
+                if (_dbContext == null)
+                {
 
-            }
+                    return NotFound();
+
+                }
+
+                if (programmer == null || programmer.IsActive == 0  )
+                {
+
+                    return BadRequest(new
+                    {
+
+                        code = 400,
+                        message = "No existe usuario con ese id por favor ingresar Id valido"
+
+                    });
+
+                }
 
 
             return programmer;
-
         }
+
 
 
         [HttpPost]
         public async Task<ActionResult<Programmer>> PostProgrammer(Programmer programmer) {
 
-            if (string.IsNullOrWhiteSpace(programmer.CompleteName))
-            {
+             int aux = 1;
+            if (string.IsNullOrWhiteSpace(programmer.CompleteName)) {
 
 
                 return BadRequest(new
                 {
                     code = 400,
                     message = "El nombre es un dato requerido no dejar en blanco por favor"
-                }) ;
-                
-               
+                });
+
+
+            }
+            if (programmer.CompleteName.GetType == aux.GetType)
+            {
+
+
+                return BadRequest(new
+                {
+                    code = 400,
+                    message = "No puedes ingresar  un tipo de dato  numerico en el nombre"
+                });
+
+
             }
 
             if (string.IsNullOrWhiteSpace(programmer.Email))
@@ -108,26 +134,52 @@ namespace example.Controllers
         [HttpPut]
         public async Task<ActionResult<Programmer>> PutProgrammer(int id , Programmer programmer) {
 
-            if (id != programmer.Id)
-            {
-
-               // return HttpStatusCodeResult( "");
-
-            }
+            int aux=1;
 
             _dbContext.Entry(programmer).State = EntityState.Modified;
 
             try
             {
+               
+                if (programmer.IsActive == 0)
+                {
+
+
+                    return BadRequest(new
+                    {
+
+
+                        message = "Usuario no existe"
+
+
+                    });
+
+                }
+
+                if (programmer.PhoneNumber.GetType() == aux.GetType())
+                {
+
+                    return BadRequest(new
+                    {
+
+
+                        message = "No puedes ingresar texto en campos numericos "
+                    });
+
+
+
+                }
+
                 await _dbContext.SaveChangesAsync();
 
             }
+
             catch (DbUpdateConcurrencyException)
             {
 
                     if (!ProgrammerAvailable(id))
                     {
-                        return NotFound();
+                        return NotFound("Not fount line 128");
                     }
                     else {
 
@@ -137,7 +189,14 @@ namespace example.Controllers
 
             }
 
-            return Ok();
+           
+
+            
+            return Ok(new { 
+            
+                message= "Usuario Actualizado efectivamente"
+            
+            });
 
         }
 
@@ -147,31 +206,21 @@ namespace example.Controllers
 
             if (_dbContext.Programmers == null){
 
-
                 return NotFound();
-
-
             }
-
-          //  var program = await _dbContext.Programmers.FindAsync(id);
-           
-           /* if (program == null)
-            {
-
-                return NotFound();
-
-            }
-           */
-
+         
             var recordToUpdate = _dbContext.Programmers.FirstOrDefault(r => r.Id == id);
 
-            if (recordToUpdate != null )
+            if (recordToUpdate != null)
             {
 
                 recordToUpdate.IsActive = 0;
                 _dbContext.SaveChanges();
+            }
+            else {
 
 
+                return NotFound();
             }
 
             //
@@ -179,7 +228,13 @@ namespace example.Controllers
 
            // await _dbContext.SaveChangesAsync();
 
-            return Ok();        
+            return Ok(new{ 
+            
+                code = 200,
+                message = $"El usuario con id {id} fue eliminado"
+
+            
+            });        
         }
 
 
@@ -194,4 +249,6 @@ namespace example.Controllers
 
 
     }
+
 }
+
