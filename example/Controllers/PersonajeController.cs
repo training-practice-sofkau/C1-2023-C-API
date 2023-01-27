@@ -56,5 +56,16 @@ namespace example.Controllers
 			await dbContext.SaveChangesAsync();
 			return Ok();
 		}
+
+		[HttpDelete("{id}")]
+		public async Task<Object> Delete(int id)
+		{
+			var product = await dbContext.Personajes.FindAsync(id);
+			if (product == null) return NotFound();
+			dbContext.Personajes.Remove(product);
+			await dbContext.SaveChangesAsync();
+			return Ok();
+
+		}
 	}
 }
