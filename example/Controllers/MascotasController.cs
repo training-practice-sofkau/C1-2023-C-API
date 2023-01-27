@@ -43,5 +43,19 @@ namespace example.Controllers
             return Ok(mascotas);
           
         }
+
+        [HttpPut]
+        [Route("{id:guid}")]
+        public async Task<IActionResult> ActualizarMascota([FromRoute] Guid id, ActualizarMascotaRequest actualizarMascotaRequest) 
+        {
+            var mascota = dbContext.Mascotas.Find(id);
+
+            if (mascota !=null)
+            {
+
+            }
+
+            return NotFound();
+        }
     }
 }
