@@ -58,6 +58,7 @@ namespace example.Controllers
 			personaje.Name = personajeData.Name;
 			personaje.Ability = personajeData.Ability;
 			personaje.Power = personajeData.Power;
+			personaje.BanActivo = personajeData.BanActivo;
 			await dbContext.SaveChangesAsync();
 			return Ok();
 		}
