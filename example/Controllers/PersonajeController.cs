@@ -32,5 +32,13 @@ namespace example.Controllers
 			return Ok(personaje);
 
 		}
+
+		[HttpPost]
+		public async Task<OkResult> Post(Personaje personaje)
+		{
+			dbContext.Add(personaje);
+			await dbContext.SaveChangesAsync();
+			return Ok();
+		}
 	}
 }
