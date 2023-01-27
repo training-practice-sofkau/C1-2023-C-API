@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 C:\Users\jesus\source\repos\C1-2023-C-API\example\bin\Debug\net6.0\appsettings.Development.json
 C:\Users\jesus\source\repos\C1-2023-C-API\example\bin\Debug\net6.0\appsettings.json
 C:\Users\jesus\source\repos\C1-2023-C-API\example\bin\Debug\net6.0\example.exe
@@ -30,3 +31,16 @@ C:\Users\jesus\source\repos\C1-2023-C-API\example\obj\Debug\net6.0\refint\exampl
 C:\Users\jesus\source\repos\C1-2023-C-API\example\obj\Debug\net6.0\example.pdb
 C:\Users\jesus\source\repos\C1-2023-C-API\example\obj\Debug\net6.0\example.genruntimeconfig.cache
 C:\Users\jesus\source\repos\C1-2023-C-API\example\obj\Debug\net6.0\ref\example.dll
+=======
+C:\Users\jesus\Source\Repos\C1-2023-C-API\example\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.dll
+C:\Users\jesus\Source\Repos\C1-2023-C-API\example\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\Users\jesus\Source\Repos\C1-2023-C-API\example\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.InMemory.dll
+C:\Users\jesus\Source\Repos\C1-2023-C-API\example\bin\Debug\net6.0\Microsoft.Extensions.Caching.Abstractions.dll
+C:\Users\jesus\Source\Repos\C1-2023-C-API\example\bin\Debug\net6.0\Microsoft.Extensions.Caching.Memory.dll
+C:\Users\jesus\Source\Repos\C1-2023-C-API\example\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\jesus\Source\Repos\C1-2023-C-API\example\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\jesus\Source\Repos\C1-2023-C-API\example\bin\Debug\net6.0\Microsoft.Extensions.Logging.dll
+C:\Users\jesus\Source\Repos\C1-2023-C-API\example\bin\Debug\net6.0\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\jesus\Source\Repos\C1-2023-C-API\example\bin\Debug\net6.0\Microsoft.Extensions.Options.dll
+C:\Users\jesus\Source\Repos\C1-2023-C-API\example\bin\Debug\net6.0\Microsoft.Extensions.Primitives.dll
+>>>>>>> fa3433c4dcc8023e83a0666ff10b20a4caf221f4
