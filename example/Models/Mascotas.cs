@@ -9,7 +9,7 @@
         public string CorreoDelTutor { get; set; }
         public long Celular { get; set; }
         public string Direccion { get; set; }
-        public bool Estado { get; set; }
+        public int Estado { get; set; }
 
     }
 }

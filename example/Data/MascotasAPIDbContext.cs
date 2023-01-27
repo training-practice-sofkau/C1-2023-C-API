@@ -1,6 +1,6 @@
 ﻿using example.Models;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.Extensions.Options;
 
 namespace example.Data
 {
@@ -10,6 +10,8 @@ namespace example.Data
         {
         }
 
-        public DbSet<Mascotas> Mascotas { get; set; } 
+        public DbSet<Mascotas> Mascotas { get; set; }
+
+        
     }
 }

@@ -93,7 +93,7 @@ namespace example.Controllers
 
             if (mascota != null)
             {
-                dbContext.Update(mascota.Estado = 0);
+                dbContext.Remove(mascota);
                 await dbContext.SaveChangesAsync();
                 return Ok($"{mascota.NombreDeLaMascota} Se ha eliminado de forma correcta!");
             }
@@ -101,21 +101,5 @@ namespace example.Controllers
             return NotFound();
         }
 
-       /* [HttpDelete]
-        [Route("{id:guid}")]
-        public async Task<IActionResult> EliminarMascota([FromRoute] Guid id)
-        {
-            var mascota = await dbContext.Mascotas.FindAsync(id);
-            SqlCommand cmd = new SqlCommand();
-            if (mascota != null)
-            {
-                cmd.CommandText = "ActualizarEstado";
-                cmd.Parameters.Add("Id", System.Data.SqlDbType.UniqueIdentifier).Value = id;
-                cmd.ExecuteNonQuery();
-                return Ok($"{mascota.NombreDeLaMascota} Se ha eliminado de forma correcta!");
-            }
-
-            return NotFound();
-        }*/
     }
 }
