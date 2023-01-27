@@ -22,6 +22,19 @@ namespace example.Controllers
             return Ok(await _context.Products.ToListAsync());
         }
 
+        [HttpGet]
+        [Route("{id:int}")]
+        public async Task<IActionResult> GetProduct([FromRoute] int id)
+        {
+            var product = await _context.Products.FindAsync(id);
+            if(product == null)
+            {
+                return NotFound();
+            }
+            return Ok(product);
+        }
+
+
         [HttpPost]
         public async Task<IActionResult> AddProduct(ProductDTO addProductRequest)
         {
@@ -54,6 +67,22 @@ namespace example.Controllers
 
             return NotFound();
 
+        }
+
+
+        [HttpDelete]
+        [Route("{id:int}")]
+        public async Task<IActionResult> DeleteProduct([FromRoute] int id)
+        {
+            var product = await _context.Products.FindAsync(id);
+            if(product != null )
+            {
+                _context.Remove(product);
+                await _context.SaveChangesAsync();
+                return Ok(product);
+            }
+
+            return NotFound();
         }
         
         
