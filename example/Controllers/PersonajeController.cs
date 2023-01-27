@@ -63,9 +63,8 @@ namespace example.Controllers
 			var product = await dbContext.Personajes.FindAsync(id);
 			if (product == null) return NotFound();
 			dbContext.Personajes.Remove(product);
-			await dbContext.SaveChangesAsync();
+				dbContext.SaveChanges();
 			return Ok();
-
 		}
 	}
 }
