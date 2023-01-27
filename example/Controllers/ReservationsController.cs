@@ -22,6 +22,20 @@ namespace example.Controllers
             return Ok(await dbContext.Reservations.ToListAsync());
         }
 
+        [HttpGet]
+        [Route("{id:guid}")]
+        public async Task<IActionResult> GetReservation([FromRoute] Guid id)
+        {
+            var reservation = await dbContext.Reservations.FindAsync(id);
+
+            if (reservation != null)
+            {
+                return Ok(reservation);
+            }
+
+            return NotFound();
+        }
+
         [HttpPost]
         public async Task<IActionResult> AddReservation(AddReservationRequest AddReservationRequest)
         {
@@ -52,6 +66,23 @@ namespace example.Controllers
                 reservation.Location = UpdateReservationRequest.Location;
                 reservation.Date = UpdateReservationRequest.Date;
 
+                await dbContext.SaveChangesAsync();
+
+                return Ok(reservation);
+            }
+
+            return NotFound();
+        }
+
+        [HttpDelete]
+        [Route("{id:guid}")]
+        public async Task<IActionResult> DeleteReservation([FromRoute] Guid id)
+        {
+            var reservation = await dbContext.Reservations.FindAsync(id);
+
+            if (reservation != null)
+            {
+                dbContext.Reservations.Remove(reservation);
                 await dbContext.SaveChangesAsync();
 
                 return Ok(reservation);
