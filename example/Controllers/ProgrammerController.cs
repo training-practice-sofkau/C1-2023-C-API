@@ -86,7 +86,7 @@ namespace example.Controllers
         [HttpPost]
         public async Task<ActionResult<Programmer>> PostProgrammer(Programmer programmer) {
 
-             int aux = 1;
+            int aux = 1;
             if (string.IsNullOrWhiteSpace(programmer.CompleteName)) {
 
 
@@ -98,18 +98,7 @@ namespace example.Controllers
 
 
             }
-            if (programmer.CompleteName.GetType == aux.GetType)
-            {
-
-
-                return BadRequest(new
-                {
-                    code = 400,
-                    message = "No puedes ingresar  un tipo de dato  numerico en el nombre"
-                });
-
-
-            }
+          
 
             if (string.IsNullOrWhiteSpace(programmer.Email))
             {
@@ -118,15 +107,25 @@ namespace example.Controllers
                 return BadRequest(new
                 {
                     code = 400,
-                    message = "El correo electronico es un dato requerido no dejar en blanco por favor"
-                });
+                    message = $"El correo electronico es un dato requerido no dejar en blanco por favor",
+                  
+                }) ;
 
             }
 
+            /*
+            if (programmer.PhoneNumber == int.Parse(aux.GetType())){
+
+
+
+            }
+
+            */
+
+
             _dbContext.Programmers.Add(programmer);
             await _dbContext.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetProgrammer), new { id = programmer.Id }, programmer);
+           return CreatedAtAction(nameof(GetProgrammer), new { id = programmer.Id }, programmer);
         
         }
 
@@ -134,13 +133,43 @@ namespace example.Controllers
         [HttpPut]
         public async Task<ActionResult<Programmer>> PutProgrammer(int id , Programmer programmer) {
 
-            int aux=1;
+            string aux ="hi";
 
             _dbContext.Entry(programmer).State = EntityState.Modified;
 
             try
             {
-               
+
+                if (string.IsNullOrWhiteSpace(programmer.CompleteName))
+                {
+
+
+                    return BadRequest(new
+                    {
+                        code = 400,
+                        message = "El nombre es un dato requerido no dejar en blanco por favor"
+                    });
+
+
+                }
+
+
+                if (string.IsNullOrWhiteSpace(programmer.Email))
+                {
+
+
+                    return BadRequest(new
+                    {
+                        code = 400,
+                        message = "El correo electronico es un dato requerido no dejar en blanco por favor"
+                    });
+
+                }
+
+
+
+
+
                 if (programmer.IsActive == 0)
                 {
 
@@ -156,7 +185,7 @@ namespace example.Controllers
 
                 }
 
-                if (programmer.PhoneNumber.GetType() == aux.GetType())
+                if ((programmer.PhoneNumber.GetType()) == aux.GetType())
                 {
 
                     return BadRequest(new
@@ -204,13 +233,31 @@ namespace example.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteProgrammer(int id) {
 
+            var programmer = await _dbContext.Programmers.FindAsync(id);
+           
+          
             if (_dbContext.Programmers == null){
 
                 return NotFound();
             }
-         
+
+            if (programmer == null || programmer.IsActive == 0)
+            {
+
+                return BadRequest(new
+                {
+
+                    code = 400,
+                    message = "No existe usuario con ese id por favor ingresar Id valido para poderlo eliminar"
+
+                });
+
+            }
+
+
             var recordToUpdate = _dbContext.Programmers.FirstOrDefault(r => r.Id == id);
 
+           
             if (recordToUpdate != null)
             {
 
