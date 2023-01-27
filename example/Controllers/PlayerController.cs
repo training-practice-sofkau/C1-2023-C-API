@@ -1,5 +1,7 @@
-﻿using example.Data;
+﻿using example.Model;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace example.Controllers
 {
@@ -8,23 +10,31 @@ namespace example.Controllers
     [Route("api/[controller]")]
     public class PlayerController : Controller
     {
-        public readonly PlayerApi playerApi;
-        public PlayerController(PlayerApi playerApi)
-        
+        public readonly PlayerApiContext playerApi;
+        public PlayerController(PlayerApiContext playerApi)       
+
         {
-            this.playerApi = playerApi;
+            playerApi = playerApi;
         }
 
 
         [HttpGet]
-        public IActionResult GetPlayers()
+        [Route("GetJugadores")]
+        public async Task<ActionResult<IEnumerable<Player>>> GetJugadores()
         {
-
-            return Ok(playerApi.players.ToList());
-            
+            return await playerApi.players.ToListAsync();
         }
 
-        [HttpPost]
-        public IActionResult AddPlayer()
+        [HttpGet]
+        [Route("GetJugador/{id}")]
+        public async Task<ActionResult<Player>> GetJugador(int id)
+        {
+            var player = await playerApi.players.FirstOrDefaultAsync(m => m.id == id);
+            if (player == null)
+                return NotFound();
+            return Ok(player);
+        }
+
+
     }
 }
