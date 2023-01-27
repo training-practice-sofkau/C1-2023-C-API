@@ -1,5 +1,7 @@
 ﻿using example.Data;
+using example.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace example.Controllers
 {
@@ -15,9 +17,26 @@ namespace example.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetReservations()
+        public async Task<IActionResult> GetReservations()
         {
-            return Ok(dbContext.Reservations.ToList());
+            return Ok(await dbContext.Reservations.ToListAsync());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddReservation(AddReservationRequest AddReservationRequest)
+        {
+            var reservation = new Reservation
+            {
+                ReservationId = Guid.NewGuid(),
+                ClientName = AddReservationRequest.ClientName,
+                Location = AddReservationRequest.Location,
+                Date = AddReservationRequest.Date
+            };
+
+            await dbContext.Reservations.AddAsync(reservation);
+            await dbContext.SaveChangesAsync();
+
+            return Ok(reservation);
         }
     }
 }
