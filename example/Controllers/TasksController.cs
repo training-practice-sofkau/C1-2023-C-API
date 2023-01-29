@@ -22,6 +22,19 @@ namespace tasks.Controllers
             return Ok(await dbContext.Tasks.ToListAsync());
         }
 
+        [HttpGet]
+        [Route("{id:guid}")]
+        public async Task<IActionResult> GetTask([FromRoute] Guid id)
+        {
+            var task = await dbContext.Tasks.FindAsync(id);
+
+            if (task == null)
+            {
+                return NotFound();
+            }
+            return Ok(task);
+        }
+
         [HttpPost]
         public async Task<IActionResult> AddTask(AddTaskRequest addTaskRequest)
         {
@@ -57,6 +70,21 @@ namespace tasks.Controllers
                 return Ok(task);
             }
 
+            return NotFound();
+        }
+
+        [HttpDelete]
+        [Route("{id:guid}")]
+        public async Task<IActionResult> DeleteTask([FromRoute] Guid id)
+        {
+            var task = await dbContext.Tasks.FindAsync(id);
+
+            if (task != null)
+            {
+                dbContext.Tasks.Remove(task);
+                await dbContext.SaveChangesAsync();
+                return Ok(task);
+            }
             return NotFound();
         }
     }
