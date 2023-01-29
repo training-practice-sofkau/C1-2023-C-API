@@ -22,5 +22,22 @@ namespace tasks.Controllers
             return Ok(await dbContext.Tasks.ToListAsync());
         }
 
+        [HttpPost(Name = "AddTask")]
+        public async Task<IActionResult> AddTask(AddTaskRequest addTaskRequest)
+        {
+            var Task = new Tasks()
+            {
+                Id = Guid.NewGuid(),
+                TaskName = addTaskRequest.TaskName,
+                TaskDescription = addTaskRequest.TaskDescription,
+                CreatedBy = addTaskRequest.CreatedBy,
+                Priority = addTaskRequest.Priority
+            };
+
+            await dbContext.Tasks.AddAsync(Task);
+            await dbContext.SaveChangesAsync();
+
+            return Ok(Task);
+        }
     }
 }
