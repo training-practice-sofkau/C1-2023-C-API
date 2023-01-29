@@ -21,7 +21,8 @@ namespace example.Controllers
         [HttpGet]
         public async Task<IActionResult> GetMascotas()
         {
-            return Ok(await dbContext.Mascotas.ToListAsync());
+            var mascotasActivas = dbContext.Mascotas.Where(r => r.Estado != 0).ToList();
+            return Ok(mascotasActivas);
         }
 
         [HttpGet]
@@ -32,7 +33,7 @@ namespace example.Controllers
 
             if (mascota == null)
             {
-                return NotFound();
+                return BadRequest(new {code = 404, message = "Esta mascota no se encuentra registrada" });
             }
             return Ok(mascota);
            
@@ -41,6 +42,7 @@ namespace example.Controllers
         [HttpPost]
         public async Task<IActionResult> AddMascotas(AgregarMascotaRequest agregarMascotaRequest) 
         {
+
             var mascotas = new Mascotas()
             {
                 Id = Guid.NewGuid(),
@@ -49,7 +51,8 @@ namespace example.Controllers
                 NombreDelTutor = agregarMascotaRequest.NombreDelTutor,
                 CorreoDelTutor = agregarMascotaRequest.CorreoDelTutor,
                 Celular = agregarMascotaRequest.Celular,
-                Direccion = agregarMascotaRequest.Direccion
+                Direccion = agregarMascotaRequest.Direccion,
+                Estado = 1
 
             };
 
@@ -90,10 +93,16 @@ namespace example.Controllers
         public async Task<IActionResult> EliminarMascota([FromRoute] Guid id)
         {
            var mascota = await dbContext.Mascotas.FindAsync(id);
+           var actualizarEstado = dbContext.Mascotas.FirstOrDefault(r => r.Id == id);
+
+            if (mascota == null || mascota.Estado == 0) 
+            {
+                return NotFound(new { code = 400, message = "No existe una mascota con esta Id, intente con una diferente" });
+            }
 
             if (mascota != null)
             {
-                dbContext.Remove(mascota);
+                actualizarEstado.Estado = 0;
                 await dbContext.SaveChangesAsync();
                 return Ok($"{mascota.NombreDeLaMascota} Se ha eliminado de forma correcta!");
             }
