@@ -12,5 +12,7 @@ namespace tasks.Models
         public string CreatedBy { get; set; }
         [Required]
         public string Priority { get; set; }
+        [Required]
+        public string State { get; set; }
     }
 }
