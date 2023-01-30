@@ -19,73 +19,127 @@ namespace tasks.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllTasks()
         {
-            return Ok(await dbContext.Tasks.ToListAsync());
+            try
+            {
+                var tasks = await dbContext.Tasks.Where(list => list.State != "inactive").ToListAsync();
+
+
+                if (tasks.Count != 0 && tasks != null)
+                {
+                    return Ok(tasks);
+                }
+                return BadRequest(new { code = 404, message = "No hay elementos para mostrar" });
+
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { code = 404, message = $"No hay elementos para mostrar: {e.Message}" });
+
+            }
         }
 
         [HttpGet]
         [Route("{id:guid}")]
         public async Task<IActionResult> GetTask([FromRoute] Guid id)
         {
-            var task = await dbContext.Tasks.FindAsync(id);
-
-            if (task == null)
+            try
             {
-                return NotFound();
+                var tasks = await dbContext.Tasks.Where(list => list.State != "inactive" && list.Id == id).ToListAsync();
+
+                if (tasks.Count != 0 && tasks != null)
+                {
+                    return Ok(tasks);
+                }
+                return BadRequest(new { code = 404, message = "No hay un elemento con este id" });
+
             }
-            return Ok(task);
+            catch (Exception e)
+            {
+                return BadRequest(new { code = 404, message = $"No hay un elemento con este id: {e.Message}" });
+
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> AddTask(AddTaskRequest addTaskRequest)
         {
-            var Task = new Tasks()
+            try
             {
-                Id = Guid.NewGuid(),
-                TaskName = addTaskRequest.TaskName,
-                TaskDescription = addTaskRequest.TaskDescription,
-                CreatedBy = addTaskRequest.CreatedBy,
-                Priority = addTaskRequest.Priority
-            };
+                var Task = new Tasks()
+                {
+                    Id = Guid.NewGuid(),
+                    TaskName = addTaskRequest.TaskName,
+                    TaskDescription = addTaskRequest.TaskDescription,
+                    CreatedBy = addTaskRequest.CreatedBy,
+                    Priority = addTaskRequest.Priority,
+                    State = addTaskRequest.State
+                };
 
-            await dbContext.Tasks.AddAsync(Task);
-            await dbContext.SaveChangesAsync();
+                await dbContext.Tasks.AddAsync(Task);
+                await dbContext.SaveChangesAsync();
 
-            return Ok(Task);
+                return Ok(Task);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { code = 400, message = $"No se pudo añadir el elemento: {e.Message}" });
+            }
+
         }
 
         [HttpPut]
         [Route("{id:guid}")]
         public async Task<IActionResult> UpdateTask([FromRoute] Guid id, UpdateTaskRequest updateTaskRequest)
         {
-            var task = await dbContext.Tasks.FindAsync(id);
-
-            if (task != null)
+            try
             {
-                task.TaskName = updateTaskRequest.TaskName;
-                task.TaskDescription = updateTaskRequest.TaskDescription;
-                task.CreatedBy = updateTaskRequest.CreatedBy;
-                task.Priority = updateTaskRequest.Priority;
+                var task = await dbContext.Tasks.FindAsync(id);
 
-                await dbContext.SaveChangesAsync();
-                return Ok(task);
+                if (task != null)
+                {
+                    task.TaskName = updateTaskRequest.TaskName;
+                    task.TaskDescription = updateTaskRequest.TaskDescription;
+                    task.CreatedBy = updateTaskRequest.CreatedBy;
+                    task.Priority = updateTaskRequest.Priority;
+                    task.State = updateTaskRequest.State;
+
+                    await dbContext.SaveChangesAsync();
+                    return Ok(task);
+                }
+                return BadRequest(new { code = 404, message = "No hay un elemento con este id" });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { code = 400, message = $"No se pudo modificar el elemento: {e.Message}" });
             }
 
-            return NotFound();
+
         }
 
         [HttpDelete]
         [Route("{id:guid}")]
         public async Task<IActionResult> DeleteTask([FromRoute] Guid id)
         {
-            var task = await dbContext.Tasks.FindAsync(id);
-
-            if (task != null)
+            try
             {
-                dbContext.Tasks.Remove(task);
-                await dbContext.SaveChangesAsync();
-                return Ok(task);
+                var tasks = await dbContext.Tasks.Where(list => list.State != "inactive" && list.Id == id).ToListAsync();
+
+                if (tasks.Count != 0 && tasks != null)
+                {
+                    foreach (var item in tasks)
+                    {
+                        item.State = "inactive";
+                    }
+                    await dbContext.SaveChangesAsync();
+                    return Ok(tasks);
+                }
+                return BadRequest(new { code = 404, message = "No hay un elemento con este id" });
+
             }
-            return NotFound();
+            catch (Exception e)
+            {
+                return BadRequest(new { code = 400, message = $"No se pudo eliminar el elemento: {e.Message}" });
+            }
         }
     }
 }
