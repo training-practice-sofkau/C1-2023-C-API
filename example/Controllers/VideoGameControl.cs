@@ -27,8 +27,8 @@ namespace example.Controllers
         {
             try
             {
-                var videoJuego = dbContext.VideoJuegos.FindAsync(id);
-                if (videoJuego == null)
+                var videoJuego = await dbContext.VideoJuegos.FindAsync(id);
+                if (videoJuego == null && videoJuego.Estado == "N")
                 {
                     return NotFound();
                 }
@@ -48,7 +48,8 @@ namespace example.Controllers
                 Id = Guid.NewGuid(),
                 Title = addVideoJuego.Title,
                 Descripcion = addVideoJuego.Descripcion,
-                Productor = addVideoJuego.Productor
+                Productor = addVideoJuego.Productor,
+                Estado = "S"
 
             };
             await dbContext.VideoJuegos.AddAsync(videoJuego);
@@ -69,6 +70,7 @@ namespace example.Controllers
                     videoJuego.Title = updateVideoJuego.Title;
                     videoJuego.Descripcion = updateVideoJuego.Descripcion;
                     videoJuego.Productor = updateVideoJuego.Productor;
+                    videoJuego.Estado = "S";
 
                     await dbContext.SaveChangesAsync();
 
@@ -88,28 +90,17 @@ namespace example.Controllers
         public async Task<IActionResult> DaleteVideoGame([FromRoute] Guid id)
         {
             var videoJuego = await dbContext.VideoJuegos.FindAsync(id);
+            videoJuego.Estado = "N";
+
             try
             {
                 if (videoJuego != null)
                 {
-                    dbContext.Remove(videoJuego);
+                    //dbContext.Remove(videoJuego);
                     await dbContext.SaveChangesAsync();
                     return Ok(videoJuego);
                 }
                 return NotFound();
-                /*var video = dbContext.VideoJuegos.FirstOrDefault(r => r.Id == id);
-                if (video != null)
-                {
-                    video.IsActive = 0;
-                    dbContext.SaveChanges();
-
-                }
-                else
-                {
-                    return NotFound();
-                }
-
-                return Ok("Juego eliminado");*/
             }
             catch (Exception){
                 return NotFound("Not fount id error 404");
